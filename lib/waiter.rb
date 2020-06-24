@@ -1,13 +1,14 @@
+require "pry"
 class Waiter
 
     attr_accessor :name, :age
 
     @@all = []
 
-    def initialize(name, age)
+    def initialize(name, yrs_experience)
 
         @name = name
-        @age = age
+        @ayrs_experience = yrs_experience
         @@all << self
 
     end
@@ -18,17 +19,25 @@ class Waiter
 
     end
 
-    def new_meal
+    def new_meal(customer, total, tip = 0)
 
+        Meal.new(self, customer, total, tip)
 
     end
 
     def meals
 
+        Meal.all.select do |meal|
+            meal.waiter == self
+        end
+
     end
 
     def best_tipper
 
+        best_tipped_meal = meals.max {|a, b| a.tip <=> b.tip}
+
+        best_tipped_meal.customer
 
     end
 
